@@ -1,13 +1,16 @@
 {
   "block": {
     "number": "0x2",
-    "coinbase": "0x0000000000000000000000000000000000000000",
+    "beneficiary": "0x0000000000000000000000000000000000000000",
     "timestamp": "0x67ad3970",
-    "gas_limit": "0x1c9c380",
-    "basefee": "0x3460e8e5",
+    "gas_limit": 30000000,
+    "basefee": 878766309,
     "difficulty": "0x0",
     "prevrandao": "0x1d0570eac63033165977a72af54d517e696ba1e520c8e14f0e74f70866549487",
-    "blob_excess_gas_and_price": { "excess_blob_gas": 0, "blob_gasprice": 1 }
+    "blob_excess_gas_and_price": {
+      "excess_blob_gas": 0,
+      "blob_gasprice": 1
+    }
   },
   "accounts": {
     "0x0000000000000000000000000000000000000000": {
@@ -105,7 +108,7 @@
       "storage": {}
     }
   },
-  "best_block_number": "0x2",
+  "best_block_number": 2,
   "blocks": [
     {
       "header": {

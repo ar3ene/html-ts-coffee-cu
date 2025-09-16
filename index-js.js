@@ -14,6 +14,7 @@ const fundButton = document.getElementById("fundButton")
 const balanceButton = document.getElementById("balanceButton")
 const withdrawButton = document.getElementById("withdrawButton")
 const ethAmountInput = document.getElementById("ethAmount")
+const getAddressToAmountFundedButton = document.getElementById("getAddressToAmountFundedButton")
 
 let walletClient
 let publicClient
@@ -114,6 +115,39 @@ async function withdraw() {
   }
 }
 
+async function getAddressToAmountFunded() {
+  if (typeof window.ethereum === "undefined") {
+    console.log("Please install MetaMask")
+    return
+  }
+  try {
+    // Ensure clients
+    if (!walletClient) {
+      walletClient = createWalletClient({ transport: custom(window.ethereum) })
+    }
+    if (!publicClient) {
+      publicClient = createPublicClient({ transport: custom(window.ethereum) })
+    }
+
+    // Use the currently connected address (you can change this to an input field later)
+    const [fundingAddress] = await walletClient.requestAddresses()
+
+    // Read on-chain data
+    const amountWei = await publicClient.readContract({
+      address: contractAddress,
+      abi,
+      functionName: "getAddressToAmountFunded",
+      args: [fundingAddress],
+    })
+
+    console.log(`Address: ${fundingAddress}`)
+    console.log(`Raw funded amount (wei): ${amountWei.toString()}`)
+    console.log(`Formatted (ETH): ${formatEther(amountWei)}`)
+  } catch (error) {
+    console.log("Read failed:", error)
+  }
+}
+
 async function getCurrentChain(client) {
   const chainId = await client.getChainId()
   const currentChain = defineChain({
@@ -138,3 +172,4 @@ connectButton.onclick = connect
 fundButton.onclick = fund
 balanceButton.onclick = getBalance
 withdrawButton.onclick = withdraw
+getAddressToAmountFundedButton.onclick = getAddressToAmountFunded
